@@ -1,10 +1,12 @@
 const express = require("express");
 const cors = require("cors");
+const shipmentRoutes = require("./routes/queries/shipment");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/shipment", shipmentRoutes);
 
 app.get("/", (req, res) => {
   res.send("Audit Trail API Running");
