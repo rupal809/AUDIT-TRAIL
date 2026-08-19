@@ -1,6 +1,30 @@
+import { useState } from "react";
 import "./App.css";
 
 function App() {
+  const [shipmentId, setShipmentId] = useState("");
+  const [searchedShipment, setSearchedShipment] = useState(null);
+
+
+  const handleSearch = () => {
+  if (!shipmentId.trim()) {
+    setSearchedShipment(null);
+    return;
+  }
+
+  // Temporary mock result
+  setSearchedShipment({
+    id: shipmentId,
+    status: "Arrived at Port",
+    location: "Mumbai Port",
+    version: 4,
+    lastEvent: "ARRIVED_AT_PORT",
+    lastUpdated: "10:30 AM",
+  });
+};
+
+
+
   const stats = [
     {
       title: "Total Containers",
@@ -74,12 +98,12 @@ function App() {
         </div>
 
         <nav>
-          <a className="active">▣ Dashboard</a>
-          <a>▤ Containers</a>
-          <a>▱ Shipments</a>
-          <a>◈ Analytics</a>
-          <a>♧ Alerts</a>
-          <a>⚙ Settings</a>
+          <a className="active"> Dashboard</a>
+          <a> Containers</a>
+          <a> Shipments</a>
+          <a> Analytics</a>
+          <a> Alerts</a>
+          <a> Settings</a>
         </nav>
 
         <div className="logout">
@@ -105,13 +129,59 @@ function App() {
         </header>
 
         {/* Search */}
-        <div className="search-section">
-          <input
-            type="text"
-            placeholder="Search container or shipment ID..."
-          />
-          <button>Search</button>
-        </div>
+      <div className="search-section">
+
+  <input
+    type="text"
+    placeholder="Enter Shipment ID..."
+    value={shipmentId}
+    onChange={(e) => setShipmentId(e.target.value)}
+  />
+
+  <button onClick={handleSearch}>
+    Search
+   </button>
+
+    </div>
+    {searchedShipment && (
+  <section className="shipment-details card">
+    <div className="card-header">
+      <h3>Shipment Details</h3>
+    </div>
+
+    <div className="shipment-info">
+      <div>
+        <span>Shipment ID</span>
+        <strong>{searchedShipment.id}</strong>
+      </div>
+
+      <div>
+        <span>Current Status</span>
+        <strong>{searchedShipment.status}</strong>
+      </div>
+
+      <div>
+        <span>Current Location</span>
+        <strong>{searchedShipment.location}</strong>
+      </div>
+
+      <div>
+        <span>Version</span>
+        <strong>{searchedShipment.version}</strong>
+      </div>
+
+      <div>
+        <span>Last Event</span>
+        <strong>{searchedShipment.lastEvent}</strong>
+      </div>
+
+      <div>
+        <span>Last Updated</span>
+        <strong>{searchedShipment.lastUpdated}</strong>
+      </div>
+    </div>
+  </section>
+)}
 
         {/* Stats */}
         <section className="stats">
