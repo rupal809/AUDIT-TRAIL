@@ -8,13 +8,16 @@ function App() {
 
   const handleSearch = () => {
   if (!shipmentId.trim()) {
+    alert("Please enter a Shipment ID");
     setSearchedShipment(null);
     return;
   }
 
+  console.log("Searching Shipment ID:", shipmentId);
+
   // Temporary mock result
   setSearchedShipment({
-    id: shipmentId,
+    id: shipmentId.trim(),
     status: "Arrived at Port",
     location: "Mumbai Port",
     version: 4,
@@ -82,7 +85,6 @@ function App() {
   return (
     <div className="app">
 
-      {/* Sidebar */}
       <aside className="sidebar">
         <div className="logo">
           <div className="logo-icon">A</div>
@@ -111,10 +113,9 @@ function App() {
         </div>
       </aside>
 
-      {/* Main */}
       <main className="main">
 
-        {/* Header */}
+        
         <header className="header">
           <div>
             <h1>Dashboard Overview</h1>
@@ -128,15 +129,19 @@ function App() {
           </div>
         </header>
 
-        {/* Search */}
+        
       <div className="search-section">
-
-  <input
-    type="text"
-    placeholder="Enter Shipment ID..."
-    value={shipmentId}
-    onChange={(e) => setShipmentId(e.target.value)}
-  />
+<input 
+  type="text" 
+  placeholder="Enter Shipment ID..." 
+  value={shipmentId} 
+  onChange={(e) => setShipmentId(e.target.value)}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  }}
+/>
 
   <button onClick={handleSearch}>
     Search
