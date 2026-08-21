@@ -1,65 +1,27 @@
-import {
-  mockDashboardStats,
-  mockShipment,
-  mockAuditTrail,
-  mockEvents,
-  mockDelayedContainers,
-} from "../Data/dashboardData";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
 
+export const apiRequest = async (endpoint, options = {}) => {
+  const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+    headers: {
+      "Content-Type": "application/json",
+      ...(options.headers || {}),
+    },
+    ...options,
+  });
 
-// dashboard ka data
+  if (!response.ok) {
+    let errorMessage = "Something went wrong";
 
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.message || errorMessage;
+    } catch {
+      // Ignore JSON parsing error
+    }
 
-
-
-export const getDashboardStats = async () => {
-  // Simulating API delay
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return mockDashboardStats;
-};
-
-
-
-// shipment ka data
-
-export const getShipment = async (shipmentId) => {
-  await new Promise((resolve) => setTimeout(resolve, 500));
-
-  if (!shipmentId) {
-    throw new Error("Shipment ID is required");
+    throw new Error(errorMessage);
   }
 
-  
-  return {
-    ...mockShipment,
-    shipmentId: shipmentId,
-  };
-};
-
-
-
-export const getShipmentAuditTrail = async (shipmentId) => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  if (!shipmentId) {
-    throw new Error("Shipment ID is required");
-  }
-
-  return mockAuditTrail;
-};
-
-
-
-
-export const getRecentEvents = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return mockEvents;
-};
-
-export const getDelayedContainers = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 300));
-
-  return mockDelayedContainers;
+  return response.json();
 };

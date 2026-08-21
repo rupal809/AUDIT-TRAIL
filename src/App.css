@@ -541,4 +541,17 @@ button {
     align-items: flex-start;
     gap: 15px;
   }
+}.search-error {
+  background: #fff1f2;
+  color: #dc2626;
+  border: 1px solid #fecdd3;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.search-section button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
