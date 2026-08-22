@@ -15,6 +15,17 @@ Instead of overwriting the previous state, the system stores each state-changing
 - Immutable Event Timeline
 - React-based Dashboard
 
-## Project Status
+## Project Development Status
 
-The project is currently under development. Backend APIs, Event Store, frontend dashboard, shipment search, documentation, and testing are being developed as separate modules by the team.
+### Frontend
+- React frontend UI is ready.
+- Dashboard and shipment search interfaces are implemented.
+- Currently using demo/mock data for UI visualization.
+- Backend API integration is pending.
+- The frontend needs to be connected to the backend through the respective API URLs once the backend APIs are available and finalized.
+
+### Next Step
+- Replace demo data with live API responses.
+- Configure the required backend API URLs.
+- Connect frontend components to the corresponding backend endpoints.
+- Perform end-to-end integration testing.
