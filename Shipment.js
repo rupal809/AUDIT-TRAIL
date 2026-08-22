@@ -1,257 +1,224 @@
 /**
- * server/routes/commands/shipment.js
+ * Shipment Command APIs
  *
- * Command-side API for the Shipment aggregate
- * (Audit Trail — Event Sourcing + CQRS).
+ * POST /shipment/create
+ * POST /shipment/move
+ * POST /shipment/temperature
+ *
+ * Command side of the Audit Trail application.
+ * Commands validate the request and append domain events
+ * to MongoDB. Query/projector logic should remain separate.
  */
 
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const { getEventStore } = require('../../services/eventStore');
+const { randomUUID } = require("crypto");
 
-// Event types
-const EVENT_TYPES = {
-  CONTAINER_CREATED: 'CONTAINER_CREATED',
-  LOADED_ON_SHIP: 'LOADED_ON_SHIP',
-  TEMPERATURE_SPIKE: 'TEMPERATURE_SPIKE',
-  ARRIVED_AT_PORT: 'ARRIVED_AT_PORT',
-  SHIPMENT_MOVED: 'SHIPMENT_MOVED',
-};
+// Change this import if your project uses a different MongoDB connection file.
+const Event = require("../../models/Event");
 
-// Append event to MongoDB Event Store
-async function appendEvent(shipmentId, type, payload) {
-  const eventStore = await getEventStore();
-
-  const event = {
-    shipmentId,
-    type,
+/**
+ * Helper: append an event to the event store.
+ */
+async function appendEvent({
+  shipmentId,
+  eventType,
+  payload,
+  userId = "system",
+}) {
+  const event = await Event.create({
+    eventId: randomUUID(),
+    aggregateId: shipmentId,
+    aggregateType: "Shipment",
+    eventType,
     payload,
-    timestamp: new Date().toISOString(),
-  };
+    userId,
+    timestamp: new Date(),
+  });
 
-  const result = await eventStore.insertOne(event);
-
-  return {
-    ...event,
-    _id: result.insertedId,
-  };
+  return event;
 }
 
-/*
+/**
  * POST /shipment/create
  *
- * Body:
+ * Creates a new shipment.
+ *
+ * Example body:
  * {
- *   shipmentId,
- *   origin,
- *   destination,
- *   containerType?,
- *   metadata?
+ *   "shipmentId": "SHP001",
+ *   "origin": "Hyderabad",
+ *   "destination": "Mumbai",
+ *   "userId": "nithin"
  * }
  */
-router.post('/create', async (req, res) => {
+router.post("/create", async (req, res) => {
   try {
     const {
       shipmentId,
       origin,
       destination,
-      containerType,
-      metadata,
+      userId,
     } = req.body;
 
     if (!shipmentId || !origin || !destination) {
       return res.status(400).json({
-        error: 'shipmentId, origin, and destination are required',
+        success: false,
+        message: "shipmentId, origin and destination are required",
       });
     }
 
-    const eventStore = await getEventStore();
-
-    const existing = await eventStore.findOne({
+    const event = await appendEvent({
       shipmentId,
-      type: EVENT_TYPES.CONTAINER_CREATED,
-    });
-
-    if (existing) {
-      return res.status(409).json({
-        error: `Shipment ${shipmentId} already exists`,
-      });
-    }
-
-    const event = await appendEvent(
-      shipmentId,
-      EVENT_TYPES.CONTAINER_CREATED,
-      {
+      eventType: "ShipmentCreated",
+      payload: {
+        shipmentId,
         origin,
         destination,
-        containerType: containerType || null,
-        metadata: metadata || {},
-      }
-    );
+        status: "CREATED",
+      },
+      userId,
+    });
 
-    return res.status(201).json({ event });
-
-  } catch (err) {
-    console.error('POST /shipment/create failed:', err);
+    return res.status(201).json({
+      success: true,
+      message: "Shipment created successfully",
+      event,
+    });
+  } catch (error) {
+    console.error("Shipment create error:", error);
 
     return res.status(500).json({
-      error: 'Failed to create shipment',
+      success: false,
+      message: "Failed to create shipment",
+      error: error.message,
     });
   }
 });
 
-/*
+/**
  * POST /shipment/move
  *
- * Body:
+ * Moves a shipment from one location to another.
+ *
+ * Example body:
  * {
- *   shipmentId,
- *   status,
- *   location,
- *   carrier?,
- *   notes?
+ *   "shipmentId": "SHP001",
+ *   "from": "Hyderabad",
+ *   "to": "Mumbai",
+ *   "userId": "nithin"
  * }
  */
-router.post('/move', async (req, res) => {
+router.post("/move", async (req, res) => {
   try {
     const {
       shipmentId,
-      status,
-      location,
-      carrier,
-      notes,
+      from,
+      to,
+      userId,
     } = req.body;
 
-    const allowedStatuses = [
-      EVENT_TYPES.LOADED_ON_SHIP,
-      EVENT_TYPES.ARRIVED_AT_PORT,
-      EVENT_TYPES.SHIPMENT_MOVED,
-    ];
-
-    if (!shipmentId || !status || !location) {
+    if (!shipmentId || !from || !to) {
       return res.status(400).json({
-        error: 'shipmentId, status, and location are required',
+        success: false,
+        message: "shipmentId, from and to are required",
       });
     }
 
-    if (!allowedStatuses.includes(status)) {
+    if (from === to) {
       return res.status(400).json({
-        error: `status must be one of: ${allowedStatuses.join(', ')}`,
+        success: false,
+        message: "from and to locations must be different",
       });
     }
 
-    const eventStore = await getEventStore();
-
-    const created = await eventStore.findOne({
+    const event = await appendEvent({
       shipmentId,
-      type: EVENT_TYPES.CONTAINER_CREATED,
+      eventType: "ShipmentMoved",
+      payload: {
+        shipmentId,
+        from,
+        to,
+      },
+      userId,
     });
 
-    if (!created) {
-      return res.status(404).json({
-        error: `Shipment ${shipmentId} does not exist`,
-      });
-    }
-
-    const event = await appendEvent(
-      shipmentId,
-      status,
-      {
-        location,
-        carrier: carrier || null,
-        notes: notes || null,
-      }
-    );
-
-    return res.status(201).json({ event });
-
-  } catch (err) {
-    console.error('POST /shipment/move failed:', err);
+    return res.status(201).json({
+      success: true,
+      message: "Shipment moved successfully",
+      event,
+    });
+  } catch (error) {
+    console.error("Shipment move error:", error);
 
     return res.status(500).json({
-      error: 'Failed to record movement',
+      success: false,
+      message: "Failed to move shipment",
+      error: error.message,
     });
   }
 });
 
-/*
+/**
  * POST /shipment/temperature
  *
- * Body:
+ * Records a temperature reading for a shipment.
+ *
+ * Example body:
  * {
- *   shipmentId,
- *   temperature,
- *   unit?,
- *   threshold?,
- *   sensorId?
+ *   "shipmentId": "SHP001",
+ *   "temperature": 4.5,
+ *   "unit": "C",
+ *   "userId": "nithin"
  * }
  */
-router.post('/temperature', async (req, res) => {
+router.post("/temperature", async (req, res) => {
   try {
     const {
       shipmentId,
       temperature,
-      unit,
-      threshold,
-      sensorId,
+      unit = "C",
+      userId,
     } = req.body;
 
-    if (
-      !shipmentId ||
-      temperature === undefined ||
-      temperature === null
-    ) {
+    if (!shipmentId || temperature === undefined || temperature === null) {
       return res.status(400).json({
-        error: 'shipmentId and temperature are required',
+        success: false,
+        message: "shipmentId and temperature are required",
       });
     }
 
-    if (
-      typeof temperature !== 'number' ||
-      Number.isNaN(temperature)
-    ) {
+    if (typeof temperature !== "number") {
       return res.status(400).json({
-        error: 'temperature must be a number',
+        success: false,
+        message: "temperature must be a number",
       });
     }
 
-    const eventStore = await getEventStore();
-
-    const created = await eventStore.findOne({
+    const event = await appendEvent({
       shipmentId,
-      type: EVENT_TYPES.CONTAINER_CREATED,
+      eventType: "ShipmentTemperatureRecorded",
+      payload: {
+        shipmentId,
+        temperature,
+        unit,
+      },
+      userId,
     });
 
-    if (!created) {
-      return res.status(404).json({
-        error: `Shipment ${shipmentId} does not exist`,
-      });
-    }
-
-    const isSpike =
-      typeof threshold === 'number' &&
-      temperature > threshold;
-
-    const event = await appendEvent(
-      shipmentId,
-      EVENT_TYPES.TEMPERATURE_SPIKE,
-      {
-        temperature,
-        unit: unit || 'C',
-        threshold: threshold ?? null,
-        sensorId: sensorId || null,
-        isSpike,
-      }
-    );
-
-    return res.status(201).json({ event });
-
-  } catch (err) {
-    console.error('POST /shipment/temperature failed:', err);
+    return res.status(201).json({
+      success: true,
+      message: "Shipment temperature recorded successfully",
+      event,
+    });
+  } catch (error) {
+    console.error("Shipment temperature error:", error);
 
     return res.status(500).json({
-      error: 'Failed to record temperature event',
+      success: false,
+      message: "Failed to record shipment temperature",
+      error: error.message,
     });
   }
 });
