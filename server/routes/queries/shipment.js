@@ -7,6 +7,11 @@ const router = express.Router();
 router.get("/history/:id", async (req, res) => {
   try {
     const shipmentId = req.params.id;
+    if (!shipmentId || shipmentId.trim() === "") {
+      return res.status(400).json({
+        message: "Shipment ID is required",
+      });
+    }
 
     const history = await Event.find({ shipmentId }).sort({ timestamp: 1 });
 
