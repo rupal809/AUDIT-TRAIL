@@ -24,6 +24,13 @@ Instead of overwriting the previous state, the system stores each state-changing
 - Backend API integration is pending.
 - The frontend needs to be connected to the backend through the respective API URLs once the backend APIs are available and finalized.
 
+### Query API
+- Query API development is partially complete.
+- Initial query functionality has been implemented.
+- Further API endpoints and query operations are still under development.
+- Integration with the frontend is pending for the completed endpoints.
+- API testing and validation will be performed as additional functionality is completed.
+
 ### Next Step
 - Replace demo data with live API responses.
 - Configure the required backend API URLs.
