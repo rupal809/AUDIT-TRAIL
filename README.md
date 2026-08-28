@@ -17,12 +17,12 @@ Instead of overwriting the previous state, the system stores each state-changing
 
 ## Project Development Status
 
-### Frontend
-- React frontend UI is ready.
-- Dashboard and shipment search interfaces are implemented.
-- Currently using demo/mock data for UI visualization.
-- Backend API integration is pending.
-- The frontend needs to be connected to the backend through the respective API URLs once the backend APIs are available and finalized.
+### Frontend & API Integration
+- Frontend UI development is complete and currently uses demo data.
+- Query API integration is in progress.
+- Available Query API functionality is being connected with the frontend.
+- API responses are being verified against the data displayed in the UI.
+- Integration testing is being performed to identify issues between the frontend and backend.
 
 ### Query API
 - Query API development is partially complete.
