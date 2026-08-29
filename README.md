@@ -1,30 +1,21 @@
-# audit-trail
+# Audit Trail
 
-an event-sourced audit trail system for tracking shipment activities and maintaining a complete history of all events.
+## Project Overview
 
-## team members
+Audit Trail is an event-sourced inventory and logistics system designed to maintain an immutable chronological history of shipment and container events.
 
-- rupal - team lead, github management, code integration, and final merge
-- swarna - query apis
-- nithin - command apis
-- gauri - react dashboard
-- divya - mongodb and event store
-- member 6 - search ui
-- member 7 - documentation and testing
+Instead of overwriting the previous state, the system stores each state-changing operation as an event and reconstructs the current state by replaying the event history.
 
-## project structure
+## Key Concepts
 
-```text
-audit-trail
-│
-├── client
-│
-├── server
-│   ├── config
-│   ├── controllers
-│   ├── models
-│   └── routes
-│
-├── docs
-│
-└── README.md
+- Event Sourcing
+- CQRS (Command Query Responsibility Segregation)
+- MongoDB Event Store
+- Shipment History
+- Immutable Event Timeline
+- React-based Dashboard
+
+## Project Status
+
+The project is currently under development. Backend APIs, Event Store, frontend dashboard, shipment search, documentation, and testing are being developed as separate modules by the team.
+
