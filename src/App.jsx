@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import "./App.css";
 
@@ -6,6 +7,7 @@ import SearchBar from "./Components/SearchBar";
 import Sidebar from "./Components/Sidebar";
 import StatCard from "./Components/StatCard";
 import ShipmentDetails from "./Components/ShipmentDetails";
+import ShipmentTimeline from "./Components/ShipmentTimeline";
 
 import {
   stats,
@@ -55,6 +57,7 @@ function App() {
 
         <Header />
 
+        {/* Search */}
         <SearchBar
           shipmentId={shipmentId}
           setShipmentId={setShipmentId}
@@ -62,32 +65,43 @@ function App() {
           loading={loading}
         />
 
+        {/* Search Error */}
         {error && (
           <div className="search-error">
             {error}
           </div>
         )}
 
+        {/* Shipment Details */}
         <ShipmentDetails
           shipment={searchedShipment}
         />
 
-        {/* Stats */}
+        {/* Shipment Timeline */}
+        {searchedShipment && searchedShipment.events && (
+          <ShipmentTimeline
+            events={searchedShipment.events}
+          />
+        )}
 
+        {/* Stats */}
         <section className="stats">
+
           {stats.map((stat) => (
             <StatCard
               key={stat.title}
               {...stat}
             />
           ))}
+
         </section>
 
         {/* Charts */}
-
         <section className="charts">
 
+          {/* Container Status */}
           <div className="card">
+
             <div className="card-header">
               <h3>Container Status</h3>
               <span>This Week ▾</span>
@@ -96,10 +110,12 @@ function App() {
             <div className="donut-container">
 
               <div className="donut">
+
                 <div className="donut-center">
                   <strong>1,248</strong>
                   <small>Total</small>
                 </div>
+
               </div>
 
               <div className="legend">
@@ -129,6 +145,7 @@ function App() {
             </div>
           </div>
 
+          {/* Shipment Overview */}
           <div className="card">
 
             <div className="card-header">
@@ -139,6 +156,7 @@ function App() {
             <div className="bar-chart">
 
               <div className="bars">
+
                 <div style={{ height: "45%" }}></div>
                 <div style={{ height: "65%" }}></div>
                 <div style={{ height: "52%" }}></div>
@@ -146,9 +164,11 @@ function App() {
                 <div style={{ height: "70%" }}></div>
                 <div style={{ height: "90%" }}></div>
                 <div style={{ height: "75%" }}></div>
+
               </div>
 
               <div className="days">
+
                 <span>Mon</span>
                 <span>Tue</span>
                 <span>Wed</span>
@@ -156,6 +176,7 @@ function App() {
                 <span>Fri</span>
                 <span>Sat</span>
                 <span>Sun</span>
+
               </div>
 
             </div>
@@ -164,10 +185,10 @@ function App() {
 
         </section>
 
-        {/* Bottom section */}
-
+        {/* Bottom Section */}
         <section className="bottom-grid">
 
+          {/* Delayed Containers */}
           <div className="card delayed">
 
             <div className="card-header">
@@ -176,21 +197,26 @@ function App() {
             </div>
 
             {delayedContainers.map(([id, delay]) => (
+
               <div
                 className="delayed-row"
                 key={id}
               >
+
                 <div>
                   <span className="status-dot"></span>
                   {id}
                 </div>
 
                 <strong>{delay}</strong>
+
               </div>
+
             ))}
 
           </div>
 
+          {/* Recent Events */}
           <div className="card">
 
             <div className="card-header">
@@ -201,6 +227,7 @@ function App() {
             <div className="timeline">
 
               {events.map((event) => (
+
                 <div
                   className="event"
                   key={event.id}
@@ -211,14 +238,17 @@ function App() {
                   ></div>
 
                   <div>
+
                     <h4>{event.title}</h4>
 
                     <p>
                       {event.id} · {event.time}
                     </p>
+
                   </div>
 
                 </div>
+
               ))}
 
             </div>
@@ -228,6 +258,7 @@ function App() {
         </section>
 
       </main>
+
     </div>
   );
 }
