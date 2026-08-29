@@ -1,4 +1,4 @@
-```javascript
+
 export const mockShipments = {
   MSKU1234567: {
     id: "MSKU1234567",
@@ -160,4 +160,4 @@ export const mockShipments = {
     ],
   },
 };
-```
+

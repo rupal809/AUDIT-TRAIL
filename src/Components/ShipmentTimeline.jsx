@@ -1,3 +1,4 @@
+
 import React from "react";
 import "./ShipmentTimeline.css";
 
@@ -10,13 +11,16 @@ function ShipmentTimeline({ events = [] }) {
         <p className="no-events">No events available.</p>
       ) : (
         <div className="timeline">
-          {events
+          {[...events]
             .sort(
               (a, b) =>
                 new Date(a.timestamp) - new Date(b.timestamp)
             )
             .map((event, index) => (
-              <div className="timeline-item" key={event.id || index}>
+              <div
+                className="timeline-item"
+                key={event.id || index}
+              >
                 <div className="timeline-dot"></div>
 
                 <div className="timeline-content">
@@ -27,7 +31,9 @@ function ShipmentTimeline({ events = [] }) {
                   </p>
 
                   {event.location && (
-                    <span>Location: {event.location}</span>
+                    <span>
+                      Location: {event.location}
+                    </span>
                   )}
 
                   {event.description && (
