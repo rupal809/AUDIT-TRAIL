@@ -4,6 +4,19 @@ const Event = require("./models/Event");
 const testImmutability = async () => {
   try {
     await mongoose.connect("mongodb://127.0.0.1:27017/audittrail");
+    // Test create
+    try {
+      const newEvent = await Event.create({
+        shipmentId: "TEST001",
+        eventType: "TestCreated",
+        payload: { test: true },
+        version: 1,
+      });
+
+      console.log("Create succeeded:", newEvent.shipmentId);
+    } catch (error) {
+      console.log("Create failed:", error.message);
+    }
 
     // Test update
     await Event.updateOne(
