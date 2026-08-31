@@ -1,0 +1,32 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const eventsRouter = require('./routes/events');
+
+const app = express();
+app.use(express.json());
+
+app.use('/events', eventsRouter);
+
+// Basic health check
+app.get('/health', (req, res) => res.json({ status: 'ok' }));
+
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/audit_trail';
+
+async function start() {
+  try {
+    await mongoose.connect(MONGO_URI);
+    console.log('Connected to MongoDB');
+
+    app.listen(PORT, () => {
+      console.log(`Audit Trail event store API listening on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to start server:', err);
+    process.exit(1);
+  }
+}
+
+start();
+
+module.exports = app;
