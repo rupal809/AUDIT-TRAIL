@@ -31,8 +31,16 @@ Instead of overwriting the previous state, the system stores each state-changing
 - Integration with the frontend is pending for the completed endpoints.
 - API testing and validation will be performed as additional functionality is completed.
 
-### Next Step
-- Replace demo data with live API responses.
-- Configure the required backend API URLs.
-- Connect frontend components to the corresponding backend endpoints.
+### Backend Development & Integration
+- Backend development is currently in progress.
+- Remaining backend functionality is being completed by the respective team members.
+- Completed backend modules are being reviewed and prepared for integration.
+- Backend branches will be merged after testing and verification.
+- Frontend integration with the completed backend APIs will continue after the merging process.
+
+### Next Steps
+- Complete the remaining backend functionality.
+- Review and test the completed backend modules.
+- Merge the finalized backend changes.
+- Connect the frontend with the live backend API URLs.
 - Perform end-to-end integration testing.
