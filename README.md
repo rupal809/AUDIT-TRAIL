@@ -44,3 +44,29 @@ Instead of overwriting the previous state, the system stores each state-changing
 - Merge the finalized backend changes.
 - Connect the frontend with the live backend API URLs.
 - Perform end-to-end integration testing.
+
+# Audit Trail Testing Plan
+
+## Objective
+
+The objective of testing is to verify that the Audit Trail application works correctly across the frontend, backend APIs, shipment search, shipment history, and event-based operations.
+
+## Testing Areas
+
+- Frontend UI testing
+- Shipment search testing
+- Query API testing
+- Command API testing
+- Shipment history testing
+- Event Store testing
+- API integration testing
+- Error handling and validation
+- End-to-end testing
+
+## Testing Approach
+
+Testing will be performed using valid inputs, invalid inputs, edge cases, and integration scenarios. Issues identified during testing will be documented and reported to the respective team member for resolution.
+
+## Test Status
+
+Testing will be updated as backend functionality and API integration are completed.
