@@ -19,6 +19,6 @@ export const getShipmentById = async (shipmentId) => {
   }
 
   return apiRequest(
-    `/shipments/${encodeURIComponent(shipmentId)}`
-  );
+  `/shipment/${encodeURIComponent(shipmentId)}`
+);
 };
