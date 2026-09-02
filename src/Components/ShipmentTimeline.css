@@ -1,58 +1,134 @@
 .shipment-timeline {
-  padding: 20px;
+  margin-top: 24px;
+  padding: 24px;
   background: #ffffff;
-  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
 }
 
 .shipment-timeline h2 {
-  margin-bottom: 25px;
+  margin: 0 0 24px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #111827;
 }
 
+/* Timeline container */
 .timeline {
   position: relative;
-  margin-left: 20px;
-  padding-left: 30px;
-  border-left: 2px solid #d1d5db;
+  margin: 10px 0 0;
+  padding: 10px 0 10px 32px;
+  border-left: 3px solid #e5e7eb;
 }
 
+/* Timeline item */
 .timeline-item {
   position: relative;
-  margin-bottom: 30px;
+  margin-bottom: 26px;
+  animation: slideIn 0.35s ease;
 }
 
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Timeline dot */
 .timeline-dot {
   position: absolute;
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
+  left: -40px;
+  top: 18px;
   border-radius: 50%;
   background: #2563eb;
-  left: -37px;
-  top: 5px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 3px #bfdbfe;
+  z-index: 2;
 }
 
+/* Timeline content card */
 .timeline-content {
-  padding: 15px;
+  position: relative;
+  padding: 16px 18px;
   background: #f8fafc;
-  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.timeline-content:hover {
+  transform: translateX(4px);
+  background: #ffffff;
+  border-color: #bfdbfe;
+  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.1);
 }
 
 .timeline-content h3 {
-  margin: 0 0 6px;
-  font-size: 16px;
+  margin: 0 0 7px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1f2937;
 }
 
 .timeline-content p {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   color: #64748b;
   font-size: 13px;
 }
 
 .timeline-content span {
-  display: block;
-  margin-top: 4px;
-  font-size: 14px;
+  display: inline-block;
+  margin-top: 3px;
+  padding: 5px 10px;
+  background: #eff6ff;
+  border-radius: 6px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 600;
 }
 
+/* Empty state */
 .no-events {
+  margin: 10px 0;
+  padding: 25px;
+  text-align: center;
   color: #64748b;
+  background: #f8fafc;
+  border-radius: 10px;
+  border: 1px dashed #cbd5e1;
+}
+
+/* Smooth entrance */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .shipment-timeline {
+    padding: 18px;
+    border-radius: 12px;
+  }
+
+  .timeline {
+    padding-left: 25px;
+  }
+
+  .timeline-dot {
+    left: -33px;
+  }
+
+  .timeline-content {
+    padding: 14px;
+  }
 }
