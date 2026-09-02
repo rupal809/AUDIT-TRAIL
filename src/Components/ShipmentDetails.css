@@ -1,0 +1,74 @@
+.shipment-details {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 18px;
+  padding: 28px;
+  margin: 20px 0;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06);
+}
+
+.shipment-details h2 {
+  margin: 0 0 24px;
+  font-size: 21px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+/* Grid of boxes */
+.shipment-info {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+/* Individual box */
+.shipment-item {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 20px;
+  min-height: 85px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.shipment-item:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.08);
+}
+
+/* Label */
+.shipment-item span {
+  font-size: 13px;
+  color: #64748b;
+  margin-bottom: 9px;
+  font-weight: 500;
+}
+
+/* Value */
+.shipment-item strong {
+  font-size: 17px;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+/* Status box */
+.status-box strong {
+  color: #16a34a;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .shipment-info {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .shipment-info {
+    grid-template-columns: 1fr;
+  }
+}
