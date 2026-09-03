@@ -14,14 +14,14 @@
   color: #0f172a;
 }
 
-/* Grid of boxes */
+
 .shipment-info {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 18px;
 }
 
-/* Individual box */
+
 .shipment-item {
   background: #f8fafc;
   border: 1px solid #e2e8f0;
@@ -40,7 +40,7 @@
   box-shadow: 0 5px 14px rgba(15, 23, 42, 0.08);
 }
 
-/* Label */
+
 .shipment-item span {
   font-size: 13px;
   color: #64748b;
@@ -48,19 +48,19 @@
   font-weight: 500;
 }
 
-/* Value */
+
 .shipment-item strong {
   font-size: 17px;
   color: #0f172a;
   font-weight: 700;
 }
 
-/* Status box */
+
 .status-box strong {
   color: #16a34a;
 }
 
-/* Responsive */
+
 @media (max-width: 900px) {
   .shipment-info {
     grid-template-columns: repeat(2, 1fr);
