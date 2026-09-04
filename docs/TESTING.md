@@ -131,3 +131,101 @@ Test the currently available Audit Trail frontend using mock data, with focus on
 Testing is limited to the currently available frontend functionality and mock shipment data.
 
 Backend-dependent modules and live API functionality are not included in Day 1 testing.
+
+# Day (04/09/2026) - Frontend Testing Testcases
+
+## Objective
+
+Continue frontend testing using the available mock shipment data, focusing on Shipment State Rewind, event information, UI alignment, usability, and the complete available frontend flow.
+
+## Shipment State Rewind Testing
+
+1. Verify that the Shipment State Rewind section is displayed for the demo shipment.
+
+2. Verify that the shipment event timeline is displayed correctly.
+
+3. Verify that the available shipment events are displayed in the timeline.
+
+4. Verify that the currently selected event is visually highlighted.
+
+5. Verify that the rewind control can be interacted with.
+
+6. Verify that changing the rewind position updates the selected shipment event.
+
+7. Verify that the selected event name is displayed correctly.
+
+8. Verify that the selected event time is displayed correctly.
+
+9. Verify that the selected event location is displayed correctly.
+
+10. Verify that the selected event description is displayed correctly.
+
+11. Verify that the shipment state information changes according to the selected event.
+
+12. Verify that the Shipment State Rewind section remains properly aligned after changing the selected event.
+
+13. Verify that event information does not overlap with other UI components.
+
+## Mock Data Testing
+
+14. Verify that the Container Status section displays the available mock data correctly.
+
+15. Verify that the Shipment Overview section displays the available mock data correctly.
+
+16. Verify that the Top Delayed Containers section displays the available mock records correctly.
+
+17. Verify that the Recent Events section displays the available mock event records correctly.
+
+18. Verify that mock data is displayed consistently across the dashboard and shipment details sections.
+
+## Web UI Alignment Testing
+
+19. Verify that the sidebar remains properly aligned with the main content area.
+
+20. Verify that dashboard cards maintain consistent spacing.
+
+21. Verify that shipment search components remain properly aligned.
+
+22. Verify that Shipment Details cards maintain consistent alignment.
+
+23. Verify that the Shipment State Rewind section remains within its designated container.
+
+24. Verify that charts do not overlap with other dashboard components.
+
+25. Verify that long shipment or event information does not break the UI layout.
+
+26. Verify that error messages do not cause UI elements to shift unexpectedly.
+
+27. Verify that buttons and interactive elements remain properly positioned.
+
+28. Verify that headings, labels, values, and event information remain readable.
+
+29. Verify that the page remains visually consistent after refreshing the browser.
+
+30. Verify that no visible UI component is clipped, overlapped, or incorrectly positioned.
+
+## Complete Available Frontend Flow
+
+31. Verify the complete available flow:
+
+    Dashboard
+    → Enter Demo Shipment ID
+    → Search Shipment
+    → View Shipment Details
+    → View Shipment State Rewind
+    → Change Rewind Position
+    → Verify Updated Shipment State
+
+32. Verify that the complete available frontend flow can be performed without UI errors.
+
+33. Verify that an invalid shipment search can be performed after a successful search.
+
+34. Verify that the "Shipment not found" result does not break the dashboard layout.
+
+35. Verify that the frontend remains usable after switching between valid and invalid shipment searches.
+
+## Day 2 Scope
+
+Testing is limited to the currently implemented frontend and available mock shipment data.
+
+Modules that are not yet connected to the backend are excluded from functional backend testing.
