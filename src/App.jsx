@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import "./App.css";
+import TemperatureChart from "./Components/TemperatureChart";
 
 import Header from "./Components/Header";
 import SearchBar from "./Components/SearchBar";
@@ -84,6 +85,9 @@ function App() {
           />
         )}
 
+        {/* Temperature Chart */}
+        <TemperatureChart />
+        
         {/* Stats */}
         <section className="stats">
 
