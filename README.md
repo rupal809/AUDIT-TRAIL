@@ -71,4 +71,64 @@ Testing will be performed using valid inputs, invalid inputs, edge cases, and in
 
 Testing will be updated as backend functionality and API integration are completed.
 
+# Audit Trail Architecture
 
+## Overview
+
+Audit Trail is an event-sourced inventory and logistics system designed to maintain an immutable history of shipment and container operations.
+
+The system is divided into frontend, backend, API, and event storage components.
+
+## Main Components
+
+### Frontend
+
+The frontend provides the web interface for users to:
+
+- View the dashboard
+- Search shipments
+- View shipment details
+- View shipment event history
+- Rewind shipment state using available events
+
+The frontend is implemented using React.
+
+Currently, the frontend uses demo/mock data for available UI functionality.
+
+### Backend
+
+The backend provides APIs for processing shipment operations and retrieving shipment information.
+
+Backend functionality includes:
+
+- Command operations
+- Query operations
+- Shipment history
+- Event processing
+
+Backend modules are currently under development and integration.
+
+### Event Store / Database
+
+The Event Store is responsible for maintaining shipment and container events.
+
+Instead of replacing previous state information, state-changing operations are stored as individual events.
+
+These events can later be used to reconstruct the shipment state and history.
+
+## Application Flow
+
+```text
+User
+  ↓
+React Frontend
+  ↓
+Backend API
+  ↓
+Command / Query Processing
+  ↓
+Event Store / Database
+  ↓
+API Response
+  ↓
+React Frontend
