@@ -132,3 +132,31 @@ Event Store / Database
 API Response
   ↓
 React Frontend
+```
+
+## Testing Documentation
+
+### Phase 1 Testing
+
+Phase 1 frontend testing has been completed and the testing documentation has been prepared.
+
+The Phase 1 testing documentation covers:
+
+- Frontend UI testing
+- Dashboard functionality
+- Shipment search
+- Shipment details
+- Shipment State Rewind
+- Mock/demo data validation
+- UI alignment and usability checks
+- Frontend functional test cases
+
+The detailed Phase 1 testing report is ready and will be added to the repository separately.
+
+### Next Steps
+
+- Upload the Phase 1 testing report.
+- Execute and record the defined test cases.
+- Document any issues identified during testing.
+- Continue testing as backend integration becomes available.
+- Perform frontend-backend integration testing.
