@@ -58,7 +58,7 @@ function App() {
 
         <Header />
 
-        {/* Search */}
+       
         <SearchBar
           shipmentId={shipmentId}
           setShipmentId={setShipmentId}
@@ -66,19 +66,19 @@ function App() {
           loading={loading}
         />
 
-        {/* Search Error */}
+        
         {error && (
           <div className="search-error">
             {error}
           </div>
         )}
 
-        {/* Shipment Details */}
+        
         <ShipmentDetails
           shipment={searchedShipment}
         />
 
-        {/* Shipment Timeline */}
+        
         {searchedShipment && searchedShipment.events && (
           <ShipmentTimeline
             events={searchedShipment.events}
