@@ -160,3 +160,49 @@ The detailed Phase 1 testing report is ready and will be added to the repository
 - Document any issues identified during testing.
 - Continue testing as backend integration becomes available.
 - Perform frontend-backend integration testing.
+
+# Audit Trail Integration Status
+
+## Current Status
+
+The Audit Trail project contains frontend, Query API, MongoDB Event Store, Read Model, and Command API components across different development branches.
+
+## Completed Integration
+
+- MongoDB connection is working.
+- Event model is implemented.
+- Immutable event protection is implemented.
+- Query API for latest shipment data is available.
+- Query API for shipment history is available.
+- React dashboard and shipment search UI are implemented.
+- Frontend shipment service is prepared for API communication.
+
+## Remaining Integration
+
+### 1. Frontend to Query API
+
+The frontend currently uses mock shipment data.
+
+The mock data configuration must be disabled and the frontend API URL must be aligned with the backend route structure.
+
+### 2. API Response Mapping
+
+The Query API response structure must be mapped to the frontend Shipment Details and Shipment State Rewind components.
+
+### 3. Read Model Integration
+
+The Event Store must be connected to the Shipment Read Model through the read model worker.
+
+### 4. Command API Integration
+
+The Command API implementation must be reviewed and integrated with the current Event model and Event Store structure.
+
+### 5. Dashboard API Integration
+
+Dashboard statistics, recent events, and delayed container information currently use mock data and require backend API support.
+
+### 6. End-to-End Integration Testing
+
+After the above integrations are completed, perform testing from:
+
+Frontend → API → Event Store → Read Model → API Response → Frontend
