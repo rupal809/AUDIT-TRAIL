@@ -17,29 +17,41 @@ router.put("/:id", async (req, res) => {
     }
 
     // Find shipment
-    const shipment = await ShipmentReadModel.findOne({ shipmentId });
+    // Atomic OCC update
+    const shipment = await ShipmentReadModel.findOneAndUpdate(
+      {
+        shipmentId,
+        version,
+      },
+      {
+        $set: {
+          status: status,
+          location: location,
+          updatedAt: new Date(),
+        },
+        $inc: {
+          version: 1,
+        },
+      },
+      {
+        new: true,
+      },
+    );
 
     if (!shipment) {
-      return res.status(404).json({
-        message: "Shipment not found",
-      });
-    }
+      const existingShipment = await ShipmentReadModel.findOne({ shipmentId });
 
-    // OCC version check
-    if (version !== shipment.version) {
+      if (!existingShipment) {
+        return res.status(404).json({
+          message: "Shipment not found",
+        });
+      }
+
       return res.status(409).json({
         message: "Update rejected due to version conflict",
-        currentVersion: shipment.version,
+        currentVersion: existingShipment.version,
       });
     }
-
-    // Update shipment and increase version
-    shipment.status = status || shipment.status;
-    shipment.location = location || shipment.location;
-    shipment.version = shipment.version + 1;
-    shipment.updatedAt = new Date();
-
-    await shipment.save();
 
     res.status(200).json({
       message: "Shipment updated successfully",
