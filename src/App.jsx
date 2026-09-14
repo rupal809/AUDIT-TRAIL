@@ -85,7 +85,7 @@ function App() {
           />
         )}
 
-        {/* Temperature Chart */}
+        
         <TemperatureChart />
         
         {/* Stats */}
@@ -100,7 +100,7 @@ function App() {
 
         </section>
 
-        {/* Charts */}
+        
         <section className="charts">
 
           {/* Container Status */}
@@ -149,7 +149,7 @@ function App() {
             </div>
           </div>
 
-          {/* Shipment Overview */}
+          
           <div className="card">
 
             <div className="card-header">
@@ -189,10 +189,10 @@ function App() {
 
         </section>
 
-        {/* Bottom Section */}
+        
         <section className="bottom-grid">
 
-          {/* Delayed Containers */}
+          
           <div className="card delayed">
 
             <div className="card-header">
@@ -220,7 +220,7 @@ function App() {
 
           </div>
 
-          {/* Recent Events */}
+         
           <div className="card">
 
             <div className="card-header">
