@@ -1,0 +1,66 @@
+.rewind-slider {
+  margin: 20px 0 30px;
+  padding: 18px 22px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.rewind-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.rewind-title h3 {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.rewind-icon {
+  font-size: 20px;
+}
+
+.slider-wrapper {
+  width: 100%;
+}
+
+.rewind-range {
+  width: 100%;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+
+.rewind-events {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  gap: 10px;
+}
+
+.rewind-events span {
+  font-size: 11px;
+  color: #9ca3af;
+  text-align: center;
+  flex: 1;
+}
+
+.rewind-events span.active {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.rewind-info {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.rewind-info strong {
+  color: #2563eb;
+}
