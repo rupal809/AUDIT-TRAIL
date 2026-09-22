@@ -1,32 +1,90 @@
 const mongoose = require("mongoose");
 
-const ShipmentReadModelSchema = new mongoose.Schema({
-  shipmentId: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+const ShipmentReadModelSchema = new mongoose.Schema(
+  {
+    shipmentId: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+    },
 
-  status: {
-    type: String,
-  },
+    status: {
+      type: String,
+      default: "UNKNOWN",
+    },
 
-  location: {
-    type: String,
-  },
+    location: {
+      type: String,
+      default: null,
+    },
 
-  lastEvent: {
-    type: String,
-  },
+    origin: {
+      type: String,
+      default: null,
+    },
 
-  version: {
-    type: Number,
-  },
+    destination: {
+      type: String,
+      default: null,
+    },
 
-  updatedAt: {
-    type: Date,
-    default: Date.now,
-  },
-});
+    containerType: {
+      type: String,
+      default: null,
+    },
 
-module.exports = mongoose.model("ShipmentReadModel", ShipmentReadModelSchema);
+    carrier: {
+      type: String,
+      default: null,
+    },
+
+    temperature: {
+      type: Number,
+      default: null,
+    },
+
+    temperatureUnit: {
+      type: String,
+      default: null,
+    },
+
+    temperatureAlert: {
+      type: Boolean,
+      default: false,
+    },
+
+    sensorId: {
+      type: String,
+      default: null,
+    },
+
+    lastEvent: {
+      type: String,
+      default: null,
+    },
+
+    version: {
+      type: Number,
+      default: 0,
+    },
+
+    createdAt: {
+      type: Date,
+      default: null,
+    },
+
+    updatedAt: {
+      type: Date,
+      default: Date.now,
+    },
+  },
+  {
+    collection: "shipmentreadmodels",
+  }
+);
+
+module.exports = mongoose.model(
+  "ShipmentReadModel",
+  ShipmentReadModelSchema
+);

@@ -1,31 +1,72 @@
 const mongoose = require("mongoose");
 
-const EventSchema = new mongoose.Schema({
-  shipmentId: String,
-  eventType: String,
-  payload: Object,
-  timestamp: {
-    type: Date,
-    default: Date.now,
+const EventSchema = new mongoose.Schema(
+  {
+    shipmentId: {
+      type: String,
+      required: true,
+      index: true,
+    },
+
+    eventType: {
+      type: String,
+      required: true,
+    },
+
+    payload: {
+      type: Object,
+      default: {},
+    },
+
+    timestamp: {
+      type: Date,
+      default: Date.now,
+      immutable: true,
+    },
+
+    version: {
+      type: Number,
+      required: true,
+    },
   },
-  version: Number,
-});
+  {
+    versionKey: false,
+  }
+);
 
-// Prevent update operations
-const preventUpdate = function () {
-  throw new Error("Events are immutable and cannot be updated");
-};
+EventSchema.index(
+  { shipmentId: 1, version: 1 },
+  { unique: true }
+);
 
-EventSchema.pre("updateOne", preventUpdate);
-EventSchema.pre("updateMany", preventUpdate);
-EventSchema.pre("findOneAndUpdate", preventUpdate);
+EventSchema.pre(
+  [
+    "updateOne",
+    "updateMany",
+    "findOneAndUpdate",
+  ],
+  function (next) {
+    next(
+      new Error(
+        "Events are immutable and cannot be updated."
+      )
+    );
+  }
+);
 
-// Prevent delete operations
-const preventDelete = function () {
-  throw new Error("Events are immutable and cannot be deleted");
-};
+EventSchema.pre(
+  [
+    "deleteOne",
+    "deleteMany",
+    "findOneAndDelete",
+  ],
+  function (next) {
+    next(
+      new Error(
+        "Events are immutable and cannot be deleted."
+      )
+    );
+  }
+);
 
-EventSchema.pre("deleteOne", preventDelete);
-EventSchema.pre("deleteMany", preventDelete);
-EventSchema.pre("findOneAndDelete", preventDelete);
 module.exports = mongoose.model("Event", EventSchema);
