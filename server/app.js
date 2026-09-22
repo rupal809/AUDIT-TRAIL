@@ -1,20 +1,54 @@
 const express = require("express");
 const cors = require("cors");
+
 const connectDB = require("./config/db");
-const shipmentRoutes = require("./routes/queries/shipment");
+
+const queryShipmentRoutes = require("./routes/queries/shipment");
+const eventRoutes = require("./routes/events");
+const commandShipmentRoutes = require("./routes/shipment");
+const replayRoutes = require("./routes/replay");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use("/shipment", shipmentRoutes);
+
+app.use("/events", eventRoutes);
+app.use("/shipment", commandShipmentRoutes);
+app.use("/shipment", queryShipmentRoutes);
+app.use("/replay", replayRoutes);
 
 app.get("/", (req, res) => {
-  res.send("Audit Trail API Running");
+  res.json({
+    message: "Audit Trail API is running",
+  });
 });
 
-connectDB();
-
-app.listen(5000, () => {
-  console.log("Server running on port 5000");
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+  });
 });
+
+const PORT = process.env.PORT || 5000;
+
+const startServer = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error(
+      "Server startup error:",
+      error.message
+    );
+
+    process.exit(1);
+  }
+};
+
+startServer();
+
+module.exports = app;
