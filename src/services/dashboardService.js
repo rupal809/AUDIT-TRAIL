@@ -1,13 +1,12 @@
-import { apiRequest } from "./api";
+import { apiRequest, USE_MOCK_DATA } from "./api";
+import { mockGetAllEvents } from "./mockStore";
+import { buildDashboardSummary } from "../utils/dashboardSummary";
 
-export const getDashboardStats = async () => {
-  return apiRequest("/dashboard/stats");
-};
+// GET /dashboard/summary — totals, status breakdown, alerts, recent events, activity
+export const getDashboardSummary = async () => {
+  if (USE_MOCK_DATA) {
+    return buildDashboardSummary(await mockGetAllEvents());
+  }
 
-export const getRecentEvents = async () => {
-  return apiRequest("/dashboard/events");
-};
-
-export const getDelayedContainers = async () => {
-  return apiRequest("/dashboard/delayed-containers");
+  return apiRequest("/dashboard/summary");
 };

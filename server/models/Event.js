@@ -39,18 +39,19 @@ EventSchema.index(
   { unique: true }
 );
 
+// Immutability guards.
+// Hooks throw instead of calling next(): works in Mongoose 8 and 9
+// (Mongoose 9 no longer passes next() to pre middleware).
 EventSchema.pre(
   [
     "updateOne",
     "updateMany",
     "findOneAndUpdate",
+    "replaceOne",
+    "findOneAndReplace",
   ],
-  function (next) {
-    next(
-      new Error(
-        "Events are immutable and cannot be updated."
-      )
-    );
+  function () {
+    throw new Error("Events are immutable and cannot be updated.");
   }
 );
 
@@ -60,13 +61,16 @@ EventSchema.pre(
     "deleteMany",
     "findOneAndDelete",
   ],
-  function (next) {
-    next(
-      new Error(
-        "Events are immutable and cannot be deleted."
-      )
-    );
+  function () {
+    throw new Error("Events are immutable and cannot be deleted.");
   }
 );
+
+// Block doc.save() on an already-stored event (only inserts allowed)
+EventSchema.pre("save", function () {
+  if (!this.isNew) {
+    throw new Error("Events are immutable and cannot be updated.");
+  }
+});
 
 module.exports = mongoose.model("Event", EventSchema);

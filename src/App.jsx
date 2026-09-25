@@ -1,268 +1,61 @@
-
 import { useState } from "react";
 import "./App.css";
-import TemperatureChart from "./Components/TemperatureChart";
 
-import Header from "./Components/Header";
-import SearchBar from "./Components/SearchBar";
 import Sidebar from "./Components/Sidebar";
-import StatCard from "./Components/StatCard";
-import ShipmentDetails from "./Components/ShipmentDetails";
-import ShipmentTimeline from "./Components/ShipmentTimeline";
-
-import {
-  stats,
-  events,
-  delayedContainers,
-} from "./Data/dashboardData";
-
-import { getShipmentById } from "./services/shipmentService";
+import DashboardPage from "./pages/DashboardPage";
+import ShipmentAuditPage from "./pages/ShipmentAuditPage";
+import CommandCenterPage from "./pages/CommandCenterPage";
 
 function App() {
-  const [shipmentId, setShipmentId] = useState("");
-  const [searchedShipment, setSearchedShipment] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [page, setPage] = useState("dashboard");
+  const [activeShipmentId, setActiveShipmentId] = useState("");
+  const [commandContext, setCommandContext] = useState({ id: "", tab: "", nonce: 0 });
 
-  const handleSearch = async () => {
-    const id = shipmentId.trim();
+  const openShipment = (shipmentId) => {
+    setActiveShipmentId(shipmentId);
+    setPage("audit");
+  };
 
-    if (!id) {
-      setError("Please enter a Shipment ID");
-      setSearchedShipment(null);
+  const openCommands = (shipmentId = "", tab = "") => {
+    setCommandContext((ctx) => ({ id: shipmentId, tab, nonce: ctx.nonce + 1 }));
+    setPage("commands");
+  };
+
+  const navigate = (target) => {
+    if (target === "commands") {
+      openCommands(activeShipmentId);
       return;
     }
-
-    try {
-      setLoading(true);
-      setError("");
-      setSearchedShipment(null);
-
-      const shipment = await getShipmentById(id);
-
-      setSearchedShipment(shipment);
-    } catch (err) {
-      setError(err.message || "Shipment not found");
-      setSearchedShipment(null);
-    } finally {
-      setLoading(false);
-    }
+    setPage(target);
   };
 
   return (
     <div className="app">
-
-      <Sidebar />
+      <Sidebar page={page} onNavigate={navigate} />
 
       <main className="main">
-
-        <Header />
-
-       
-        <SearchBar
-          shipmentId={shipmentId}
-          setShipmentId={setShipmentId}
-          onSearch={handleSearch}
-          loading={loading}
-        />
-
-        
-        {error && (
-          <div className="search-error">
-            {error}
-          </div>
+        {page === "dashboard" && (
+          <DashboardPage onOpenShipment={openShipment} onNavigate={navigate} />
         )}
 
-        
-        <ShipmentDetails
-          shipment={searchedShipment}
-        />
-
-        
-        {searchedShipment && searchedShipment.events && (
-          <ShipmentTimeline
-            events={searchedShipment.events}
+        {page === "audit" && (
+          <ShipmentAuditPage
+            key={activeShipmentId}
+            shipmentId={activeShipmentId}
+            onOpenShipment={openShipment}
+            onRecordEvent={openCommands}
           />
         )}
 
-        {/* Temperature Chart */}
-        <TemperatureChart />
-        
-        {/* Stats */}
-        <section className="stats">
-
-          {stats.map((stat) => (
-            <StatCard
-              key={stat.title}
-              {...stat}
-            />
-          ))}
-
-        </section>
-
-        {/* Charts */}
-        <section className="charts">
-
-          {/* Container Status */}
-          <div className="card">
-
-            <div className="card-header">
-              <h3>Container Status</h3>
-              <span>This Week ▾</span>
-            </div>
-
-            <div className="donut-container">
-
-              <div className="donut">
-
-                <div className="donut-center">
-                  <strong>1,248</strong>
-                  <small>Total</small>
-                </div>
-
-              </div>
-
-              <div className="legend">
-
-                <p>
-                  <span className="dot blue"></span>
-                  In Transit <strong>842</strong>
-                </p>
-
-                <p>
-                  <span className="dot green"></span>
-                  Delivered <strong>356</strong>
-                </p>
-
-                <p>
-                  <span className="dot orange"></span>
-                  At Port <strong>32</strong>
-                </p>
-
-                <p>
-                  <span className="dot red"></span>
-                  Delayed <strong>18</strong>
-                </p>
-
-              </div>
-
-            </div>
-          </div>
-
-          {/* Shipment Overview */}
-          <div className="card">
-
-            <div className="card-header">
-              <h3>Shipment Overview</h3>
-              <span>This Week ▾</span>
-            </div>
-
-            <div className="bar-chart">
-
-              <div className="bars">
-
-                <div style={{ height: "45%" }}></div>
-                <div style={{ height: "65%" }}></div>
-                <div style={{ height: "52%" }}></div>
-                <div style={{ height: "80%" }}></div>
-                <div style={{ height: "70%" }}></div>
-                <div style={{ height: "90%" }}></div>
-                <div style={{ height: "75%" }}></div>
-
-              </div>
-
-              <div className="days">
-
-                <span>Mon</span>
-                <span>Tue</span>
-                <span>Wed</span>
-                <span>Thu</span>
-                <span>Fri</span>
-                <span>Sat</span>
-                <span>Sun</span>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </section>
-
-        {/* Bottom Section */}
-        <section className="bottom-grid">
-
-          {/* Delayed Containers */}
-          <div className="card delayed">
-
-            <div className="card-header">
-              <h3>Top Delayed Containers</h3>
-              <span className="view">View all</span>
-            </div>
-
-            {delayedContainers.map(([id, delay]) => (
-
-              <div
-                className="delayed-row"
-                key={id}
-              >
-
-                <div>
-                  <span className="status-dot"></span>
-                  {id}
-                </div>
-
-                <strong>{delay}</strong>
-
-              </div>
-
-            ))}
-
-          </div>
-
-          {/* Recent Events */}
-          <div className="card">
-
-            <div className="card-header">
-              <h3>Recent Events</h3>
-              <span className="view">View all</span>
-            </div>
-
-            <div className="timeline">
-
-              {events.map((event) => (
-
-                <div
-                  className="event"
-                  key={event.id}
-                >
-
-                  <div
-                    className={`event-dot ${event.type}`}
-                  ></div>
-
-                  <div>
-
-                    <h4>{event.title}</h4>
-
-                    <p>
-                      {event.id} · {event.time}
-                    </p>
-
-                  </div>
-
-                </div>
-
-              ))}
-
-            </div>
-
-          </div>
-
-        </section>
-
+        {page === "commands" && (
+          <CommandCenterPage
+            key={commandContext.nonce}
+            initialShipmentId={commandContext.id}
+            initialTab={commandContext.tab}
+            onOpenShipment={openShipment}
+          />
+        )}
       </main>
-
     </div>
   );
 }
