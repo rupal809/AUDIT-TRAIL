@@ -72,6 +72,16 @@ const shipmentReducer = (state, event) => {
         updatedAt: event.timestamp,
       };
 
+    case "DELIVERED":
+      return {
+        ...currentState,
+        status: "DELIVERED",
+        location: payload.location || currentState.location,
+        lastEvent: event.eventType,
+        version: event.version,
+        updatedAt: event.timestamp,
+      };
+
     case "TEMPERATURE_SPIKE":
       return {
         ...currentState,

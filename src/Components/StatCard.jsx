@@ -1,28 +1,14 @@
-function StatCard({
-  title,
-  value,
-  change,
-  icon,
-}) {
+function StatCard({ title, value, hint, icon, tone = "default" }) {
   return (
-    <div className="stat-card">
-
+    <div className={`stat-card tone-${tone}`}>
       <div className="stat-top">
-
         <span>{title}</span>
-
-        <div className="stat-icon">
-          {icon}
-        </div>
-
+        <div className="stat-icon" aria-hidden="true">{icon}</div>
       </div>
 
       <h2>{value}</h2>
 
-      <p className="positive">
-        ↑ {change} <span>vs last week</span>
-      </p>
-
+      {hint && <p className="stat-hint">{hint}</p>}
     </div>
   );
 }

@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "npm --prefix server run dev",
+    "worker": "npm --prefix server run worker"
   },
   "dependencies": {
     "cors": "^2.8.6",
