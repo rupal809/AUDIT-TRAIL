@@ -1,4 +1,13 @@
-function Sidebar() {
+function Sidebar({ activePage, setActivePage }) {
+  const menuItems = [
+    "Dashboard",
+    "Containers",
+    "Shipments",
+    "Analytics",
+    "Alerts",
+    "Settings",
+  ];
+
   return (
     <aside className="sidebar">
 
@@ -17,12 +26,15 @@ function Sidebar() {
       </div>
 
       <nav>
-        <a className="active">Dashboard</a>
-        <a>Containers</a>
-        <a>Shipments</a>
-        <a>Analytics</a>
-        <a>Alerts</a>
-        <a>Settings</a>
+        {menuItems.map((item) => (
+          <a
+            key={item}
+            className={activePage === item ? "active" : ""}
+            onClick={() => setActivePage(item)}
+          >
+            {item}
+          </a>
+        ))}
       </nav>
 
       <div className="logout">
