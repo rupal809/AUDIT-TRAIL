@@ -2,13 +2,16 @@ import { useState } from "react";
 import "./App.css";
 
 import Sidebar from "./Components/Sidebar";
+
 import DashboardPage from "./pages/DashboardPage";
 import ShipmentAuditPage from "./pages/ShipmentAuditPage";
 import CommandCenterPage from "./pages/CommandCenterPage";
 
 function App() {
-  const [page, setPage] = useState("dashboard");
+  const [page, setPage] = useState("Dashboard");
+
   const [activeShipmentId, setActiveShipmentId] = useState("");
+
   const [commandContext, setCommandContext] = useState({
     id: "",
     tab: "",
@@ -17,21 +20,26 @@ function App() {
 
   const openShipment = (shipmentId) => {
     setActiveShipmentId(shipmentId);
-    setPage("shipment");
+    setPage("Shipments");
   };
 
   const openCommandCenter = (shipmentId = "", tab = "") => {
     setCommandContext({
       id: shipmentId,
-      tab,
+      tab: tab,
       nonce: Date.now(),
     });
-    setPage("command");
+
+    setPage("Command Center");
+  };
+
+  const handlePageChange = (selectedPage) => {
+    setPage(selectedPage);
   };
 
   const renderPage = () => {
     switch (page) {
-      case "dashboard":
+      case "Dashboard":
         return (
           <DashboardPage
             onOpenShipment={openShipment}
@@ -39,22 +47,62 @@ function App() {
           />
         );
 
-      case "shipment":
+      case "Shipments":
         return (
           <ShipmentAuditPage
             shipmentId={activeShipmentId}
-            onBack={() => setPage("dashboard")}
+            onBack={() => setPage("Dashboard")}
             onOpenCommandCenter={openCommandCenter}
           />
         );
 
-      case "command":
+      case "Containers":
+        return (
+          <CommandCenterPage
+            shipmentId={activeShipmentId}
+            activeTab="containers"
+            nonce={commandContext.nonce}
+            onBack={() => setPage("Dashboard")}
+          />
+        );
+
+      case "Analytics":
+        return (
+          <CommandCenterPage
+            shipmentId={activeShipmentId}
+            activeTab="analytics"
+            nonce={commandContext.nonce}
+            onBack={() => setPage("Dashboard")}
+          />
+        );
+
+      case "Alerts":
+        return (
+          <CommandCenterPage
+            shipmentId={activeShipmentId}
+            activeTab="alerts"
+            nonce={commandContext.nonce}
+            onBack={() => setPage("Dashboard")}
+          />
+        );
+
+      case "Settings":
+        return (
+          <CommandCenterPage
+            shipmentId={activeShipmentId}
+            activeTab="settings"
+            nonce={commandContext.nonce}
+            onBack={() => setPage("Dashboard")}
+          />
+        );
+
+      case "Command Center":
         return (
           <CommandCenterPage
             shipmentId={commandContext.id}
             activeTab={commandContext.tab}
             nonce={commandContext.nonce}
-            onBack={() => setPage("dashboard")}
+            onBack={() => setPage("Dashboard")}
           />
         );
 
@@ -70,16 +118,20 @@ function App() {
 
   return (
     <div className="app">
+
       <Sidebar
         activePage={page}
-        setActivePage={setPage}
+        setActivePage={handlePageChange}
         onOpenShipment={openShipment}
         onOpenCommandCenter={openCommandCenter}
       />
 
       <main className="main">
+
         {renderPage()}
+
       </main>
+
     </div>
   );
 }
