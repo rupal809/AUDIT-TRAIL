@@ -1,30 +1,12 @@
-function Header() {
+function Header({ title, subtitle, children }) {
   return (
     <header className="header">
-
       <div>
-        <h1>Dashboard Overview</h1>
-        <p>
-          Monitor your logistics operations and audit events.
-        </p>
+        <h1>{title}</h1>
+        {subtitle && <p>{subtitle}</p>}
       </div>
 
-      <div className="header-actions">
-
-        <button className="date-btn">
-          📅 Today
-        </button>
-
-        <button className="export-btn">
-          Export Report
-        </button>
-
-        <span className="notification">
-          🔔
-        </span>
-
-      </div>
-
+      {children && <div className="header-actions">{children}</div>}
     </header>
   );
 }

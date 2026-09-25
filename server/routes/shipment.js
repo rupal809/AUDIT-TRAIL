@@ -124,9 +124,12 @@ router.post("/move", async (req, res) => {
     }
 
     const allowedStatuses = [
+      "LOADED_ON_TRUCK",
       "LOADED_ON_SHIP",
-      "ARRIVED_AT_PORT",
+      "IN_TRANSIT",
       "SHIPMENT_MOVED",
+      "ARRIVED_AT_PORT",
+      "DELIVERED",
     ];
 
     if (!allowedStatuses.includes(status)) {

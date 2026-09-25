@@ -6,6 +6,7 @@ const {
   getCurrentVersion,
   ConcurrencyError,
 } = require("../services/eventStore");
+const { buildHashChain } = require("../utils/hashChain");
 
 const router = express.Router();
 
@@ -126,5 +127,35 @@ router.get(
     }
   }
 );
+
+// GET /events/:shipmentId/proof
+// Returns the SHA-256 hash chain of the event stream (tamper evidence).
+router.get("/:shipmentId/proof", async (req, res) => {
+  try {
+    const { shipmentId } = req.params;
+
+    const events = await getEventStream(shipmentId);
+
+    if (events.length === 0) {
+      return res.status(404).json({
+        message: "Event stream not found",
+        shipmentId,
+      });
+    }
+
+    return res.status(200).json({
+      shipmentId,
+      count: events.length,
+      ...buildHashChain(events),
+    });
+  } catch (error) {
+    console.error("Get proof error:", error);
+
+    return res.status(500).json({
+      message: "Failed to build integrity proof",
+      error: error.message,
+    });
+  }
+});
 
 module.exports = router;

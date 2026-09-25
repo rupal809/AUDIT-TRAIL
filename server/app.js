@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const cors = require("cors");
 
@@ -7,16 +9,24 @@ const queryShipmentRoutes = require("./routes/queries/shipment");
 const eventRoutes = require("./routes/events");
 const commandShipmentRoutes = require("./routes/shipment");
 const replayRoutes = require("./routes/replay");
+const dashboardRoutes = require("./routes/dashboard");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-app.use("/events", eventRoutes);
-app.use("/shipment", commandShipmentRoutes);
-app.use("/shipment", queryShipmentRoutes);
-app.use("/replay", replayRoutes);
+// Mounted at "/" (existing tests / Postman) and "/api" (React frontend)
+const apiRouter = express.Router();
+
+apiRouter.use("/events", eventRoutes);
+apiRouter.use("/shipment", commandShipmentRoutes);
+apiRouter.use("/shipment", queryShipmentRoutes);
+apiRouter.use("/replay", replayRoutes);
+apiRouter.use("/dashboard", dashboardRoutes);
+
+app.use("/api", apiRouter);
+app.use("/", apiRouter);
 
 app.get("/", (req, res) => {
   res.json({
